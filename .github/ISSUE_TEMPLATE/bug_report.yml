@@ -1,0 +1,29 @@
+name: Bug report
+description: Something in this module does not work as documented
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Module version
+      description: The tag you are using, e.g. v0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected versus what actually happened
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Relevant configuration
+      description: The module block that triggers it (redact anything sensitive)
+      render: hcl
+  - type: input
+    id: tf-version
+    attributes:
+      label: Terraform/OpenTofu version
+      description: Output of `terraform version`
