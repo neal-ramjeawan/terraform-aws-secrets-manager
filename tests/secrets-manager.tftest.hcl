@@ -59,7 +59,12 @@ run "no_initial_version_by_default" {
 }
 
 run "enables_rotation_when_tagged" {
-  command = plan
+  # plan-only can't resolve this: the count inside the composed
+  # terraform-aws-lambda module (aws_iam_role_policy.inline) depends on
+  # additional_inline_policy_json, which flows from a mocked data source
+  # across the module boundary — Terraform can't know that value without
+  # actually completing an apply, even a fully mocked one.
+  command = apply
 
   variables {
     tags = {
@@ -94,7 +99,9 @@ run "no_rotation_for_unrelated_tags" {
 }
 
 run "rotation_days_flows_into_rotation_rules" {
-  command = plan
+  # Same reason as enables_rotation_when_tagged above — rotation on means
+  # the cross-module count can't resolve at plan-only.
+  command = apply
 
   variables {
     tags          = { rotation = "true" }

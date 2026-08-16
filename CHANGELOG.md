@@ -17,6 +17,13 @@ follows [Keep a Changelog](https://keepachangelog.com/), versions follow
   on `terraform-aws-lambda` — it got superseded by fixes before i
   pushed it. Since `v0.1.1` is what will actually exist as that repo's
   first real tag, repointed the ref there.
+- `terraform test` then failed a third time: with rotation enabled, a
+  `count` inside the composed `terraform-aws-lambda` module depends on a
+  value that flows from a mocked data source across the module boundary
+  — not knowable at plan-only, even with `mock_data` supplying a default.
+  Switched the two rotation-enabling test runs from `command = plan` to
+  `command = apply` (still fully mocked, still free) so the value
+  actually resolves.
 
 ## [0.1.0] - 2026-08-16
 
