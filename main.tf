@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "rotation_permissions" {
 
 module "rotation_lambda" {
   count  = local.rotation_enabled ? 1 : 0
-  source = "git::https://github.com/<you>/terraform-aws-lambda.git?ref=v0.1.0"
+  source = "git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git?ref=v0.1.0"
 
   function_name = "${var.secret_name}-rotation"
   description   = "Rotates ${var.secret_name} — created by the secrets-manager module"
