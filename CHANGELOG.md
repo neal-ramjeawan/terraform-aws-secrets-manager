@@ -12,6 +12,11 @@ follows [Keep a Changelog](https://keepachangelog.com/), versions follow
   username, so the `terraform-aws-lambda` dependency couldn't be cloned
   at all — `remote: Repository not found`. Replaced with the actual repo
   owner throughout (this file, README, everywhere `<you>` appeared).
+- `terraform init` then failed a second time, same line, different cause:
+  the ref pointed at `v0.1.0`, but that tag was never actually published
+  on `terraform-aws-lambda` — it got superseded by fixes before i
+  pushed it. Since `v0.1.1` is what will actually exist as that repo's
+  first real tag, repointed the ref there.
 
 ## [0.1.0] - 2026-08-16
 
