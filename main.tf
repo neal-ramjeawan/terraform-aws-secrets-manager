@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "rotation_permissions" {
 
 module "rotation_lambda" {
   count  = local.rotation_enabled ? 1 : 0
-  source = "git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git?ref=v0.1.1"
+  source = "git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git?ref=v0.1.2"
 
   function_name = "${var.secret_name}-rotation"
   description   = "Rotates ${var.secret_name} — created by the secrets-manager module"
@@ -65,7 +65,8 @@ module "rotation_lambda" {
   filename         = data.archive_file.rotation_lambda[0].output_path
   source_code_hash = data.archive_file.rotation_lambda[0].output_base64sha256
 
-  additional_inline_policy_json = data.aws_iam_policy_document.rotation_permissions[0].json
+  additional_inline_policy_json   = data.aws_iam_policy_document.rotation_permissions[0].json
+  attach_additional_inline_policy = true # this module block only runs when rotation is on — always true here, so no inference needed
 
   allowed_triggers = {
     secretsmanager = {

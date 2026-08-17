@@ -28,7 +28,7 @@ module "api_key" {
    `PutSecretValue` / `UpdateSecretVersionStage` / `DescribeSecret` on
    *this specific secret's ARN* (plus `GetRandomPassword`, which AWS
    doesn't support resource-level scoping for at all).
-3. Calls `module "rotation_lambda" { source = "git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git?ref=v0.1.1" ... }`,
+3. Calls `module "rotation_lambda" { source = "git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git?ref=v0.1.2" ... }`,
    passing that policy in via `additional_inline_policy_json` and granting
    Secrets Manager invoke access via `allowed_triggers` — reusing that
    module's generic mechanism rather than a bespoke permission resource.
