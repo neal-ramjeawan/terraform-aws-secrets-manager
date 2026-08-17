@@ -2,14 +2,14 @@
 
 Creates a secret in AWS Secrets Manager. If the secret is tagged
 `rotation = "true"`, the module automatically composes the
-[`terraform-aws-lambda`](https://github.com/<you>/terraform-aws-lambda)
+[`terraform-aws-lambda`](https://github.com/neal-ramjeawan/terraform-aws-lambda)
 module to build and attach a rotation Lambda — no separate rotation
 variable to remember to set. Remove the tag (or set it to anything else)
 and rotation goes away on the next apply.
 
 ```hcl
 module "api_key" {
-  source = "git::https://github.com/<you>/terraform-aws-secrets-manager.git?ref=v0.1.0"
+  source = "git::https://github.com/neal-ramjeawan/terraform-aws-secrets-manager.git?ref=v0.1.0"
 
   secret_name = "myapp-api-key"
 
@@ -28,7 +28,7 @@ module "api_key" {
    `PutSecretValue` / `UpdateSecretVersionStage` / `DescribeSecret` on
    *this specific secret's ARN* (plus `GetRandomPassword`, which AWS
    doesn't support resource-level scoping for at all).
-3. Calls `module "rotation_lambda" { source = "git::https://github.com/<you>/terraform-aws-lambda.git?ref=v0.1.0" ... }`,
+3. Calls `module "rotation_lambda" { source = "git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git?ref=v0.1.2" ... }`,
    passing that policy in via `additional_inline_policy_json` and granting
    Secrets Manager invoke access via `allowed_triggers` — reusing that
    module's generic mechanism rather than a bespoke permission resource.
@@ -79,7 +79,7 @@ Auto-generated from `variables.tf`/`outputs.tf` on every PR — see `.github/wor
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_rotation_lambda"></a> [rotation\_lambda](#module\_rotation\_lambda) | git::https://github.com/<you>/terraform-aws-lambda.git | v0.1.0 |
+| <a name="module_rotation_lambda"></a> [rotation\_lambda](#module\_rotation\_lambda) | git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git | v0.1.2 |
 
 ## Resources
 
