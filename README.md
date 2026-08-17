@@ -79,7 +79,7 @@ Auto-generated from `variables.tf`/`outputs.tf` on every PR — see `.github/wor
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_rotation_lambda"></a> [rotation\_lambda](#module\_rotation\_lambda) | git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git | v0.1.0 |
+| <a name="module_rotation_lambda"></a> [rotation\_lambda](#module\_rotation\_lambda) | git::https://github.com/neal-ramjeawan/terraform-aws-lambda.git | v0.1.2 |
 
 ## Resources
 
