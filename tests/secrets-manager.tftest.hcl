@@ -50,7 +50,7 @@ mock_provider "aws" {
   # ARN, so provide a realistic Lambda ARN for resources that consume it.
   mock_resource "aws_lambda_function" {
     defaults = {
-      arn          = "arn:aws:lambda:us-east-1:123456789012:function:test-secret-rotation"
+      arn           = "arn:aws:lambda:us-east-1:123456789012:function:test-secret-rotation"
       function_name = "test-secret-rotation"
     }
   }
