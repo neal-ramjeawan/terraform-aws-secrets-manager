@@ -3,12 +3,13 @@
 # on disk, which is harmless and free.
 # Run with: terraform test (from the repo root)
 #
-# Without the mock_data override below, aws_iam_policy_document's own
-# computed `.json` output gets faked out too (mock_provider mocks the whole
-# provider, not just resources that hit a real API) — and the fake string
-# isn't valid JSON, which breaks rotation_permissions here and, when
-# rotation is enabled, the composed terraform-aws-lambda module's own
-# assume-role policy too (same mocked provider instance, same bug).
+# The composed terraform-aws-lambda module creates several AWS resources.
+# The AWS provider mock therefore needs realistic values for ARN attributes
+# that cross the module boundary or are consumed by other AWS resources.
+#
+# Without these overrides, mock_provider generates placeholder strings such
+# as "abc123", which are fine for unconstrained attributes but fail when the
+# AWS provider schema validates the value as an ARN.
 
 mock_provider "aws" {
   mock_data "aws_iam_policy_document" {
@@ -27,8 +28,7 @@ mock_provider "aws" {
   }
 
   # The composed terraform-aws-lambda module passes the IAM role ARN
-  # directly to aws_lambda_function.role. Terraform's default mock value
-  # for this attribute is not a valid ARN, so provide a realistic mock.
+  # directly to aws_lambda_function.role.
   mock_resource "aws_iam_role" {
     defaults = {
       arn  = "arn:aws:iam::123456789012:role/test-role"
@@ -38,11 +38,20 @@ mock_provider "aws" {
 
   # The secret ARN is passed to the Lambda module as source_arn for the
   # Secrets Manager trigger and is also used in the IAM policy document.
-  # Terraform's default mock value is not a valid ARN, so provide a
-  # realistic Secrets Manager ARN.
   mock_resource "aws_secretsmanager_secret" {
     defaults = {
       arn = "arn:aws:secretsmanager:us-east-1:123456789012:secret:test-secret"
+    }
+  }
+
+  # The composed terraform-aws-lambda module exposes the Lambda function ARN
+  # through its function_arn output. That output ultimately comes from
+  # aws_lambda_function.this. Terraform's default mock value is not a valid
+  # ARN, so provide a realistic Lambda ARN for resources that consume it.
+  mock_resource "aws_lambda_function" {
+    defaults = {
+      arn          = "arn:aws:lambda:us-east-1:123456789012:function:test-secret-rotation"
+      function_name = "test-secret-rotation"
     }
   }
 }
