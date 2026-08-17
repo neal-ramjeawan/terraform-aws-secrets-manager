@@ -24,6 +24,16 @@ mock_provider "aws" {
       })
     }
   }
+
+  # The composed terraform-aws-lambda module passes the IAM role ARN
+  # directly to aws_lambda_function.role. Terraform's default mock value
+  # for this attribute is not a valid ARN, so provide a realistic mock.
+  mock_resource "aws_iam_role" {
+    defaults = {
+      arn  = "arn:aws:iam::123456789012:role/test-role"
+      name = "test-role"
+    }
+  }
 }
 
 variables {
