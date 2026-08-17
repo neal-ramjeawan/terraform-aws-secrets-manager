@@ -9,6 +9,7 @@
 # isn't valid JSON, which breaks rotation_permissions here and, when
 # rotation is enabled, the composed terraform-aws-lambda module's own
 # assume-role policy too (same mocked provider instance, same bug).
+
 mock_provider "aws" {
   mock_data "aws_iam_policy_document" {
     defaults = {
@@ -32,6 +33,16 @@ mock_provider "aws" {
     defaults = {
       arn  = "arn:aws:iam::123456789012:role/test-role"
       name = "test-role"
+    }
+  }
+
+  # The secret ARN is passed to the Lambda module as source_arn for the
+  # Secrets Manager trigger and is also used in the IAM policy document.
+  # Terraform's default mock value is not a valid ARN, so provide a
+  # realistic Secrets Manager ARN.
+  mock_resource "aws_secretsmanager_secret" {
+    defaults = {
+      arn = "arn:aws:secretsmanager:us-east-1:123456789012:secret:test-secret"
     }
   }
 }
